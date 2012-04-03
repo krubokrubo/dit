@@ -1,4 +1,5 @@
 # Django settings for dit project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -10,6 +11,8 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DATABASES = {
     'default': {
@@ -60,6 +63,8 @@ MEDIA_URL = ''
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
+LOGIN_URL = '/login/'
+
 # Make this unique, and don't share it with anybody.
 # SECRET_KEY   was removed from settings.py before using github
 
@@ -84,13 +89,14 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    PROJECT_ROOT + '/templates',
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.messages',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

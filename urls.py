@@ -13,4 +13,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^login/$', 'django.contrib.auth.views.login'),
+
+    url(r'^dt/', 'dit.dt.views.commitmenttable', name='commitmenttable'),
 )
