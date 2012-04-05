@@ -1,4 +1,17 @@
+<style>
+ .note {border:1px dotted gray;}
+</style>
+
+
 <h1>{{ commitment }}</h1>
+
+{% for note in commitment.note_set.all %}
+<div class="note">
+  <div class="userdate">{{ note.user }} on {{ note.datestamp }}:</div>
+  <div class="changelog">{{ note.changelog }}</div>
+  {{ note.notes }}
+</div>
+{% endfor %}
 
 <hr>
 

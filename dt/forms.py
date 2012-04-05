@@ -8,8 +8,8 @@ class CommitmentForm(forms.ModelForm):
         model = models.Commitment
         exclude = ('measurable','scale')
 
-    accountable = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple())
-    stakeholders = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple())
+    accountable = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
+    stakeholders = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
     add_notes = forms.CharField(widget=forms.Textarea)   
 
     def __init__(self, request, *args, **kwargs):
@@ -18,8 +18,14 @@ class CommitmentForm(forms.ModelForm):
         self.fields['accountable'].queryset = auth_models.User.objects.all().order_by('username')
         self.fields['stakeholders'].queryset = auth_models.User.objects.all().order_by('username')
 
-    
-
+    def save(self, request):
+        changelog = "(changelog doesn't work yet)"
+        super(CommitmentForm, self).save()
+        note = models.Note.objects.create(
+                commitment=self.instance,
+                changelog=changelog,
+                notes=self.cleaned_data['add_notes'],
+                user=request.user)
 
 
 class CommitmentFilterForm(forms.ModelForm):

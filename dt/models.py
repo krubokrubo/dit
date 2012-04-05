@@ -24,7 +24,7 @@ class CommitmentManager(models.Manager):
         return self.filter(Q(accountable=user) | Q(stakeholders=user)).distinct()
 
 class Commitment(models.Model):
-    name = models.CharField(max_length=500, blank=True, default='')
+    name = models.CharField(max_length=500, blank=True, default='', verbose_name='Title')
     due = models.DateTimeField()
     accountable = models.ManyToManyField(auth_models.User,related_name='accountable_for',blank=True)
     stakeholders = models.ManyToManyField(auth_models.User,related_name='stakeholder_for',blank=True)
@@ -43,3 +43,13 @@ class Commitment(models.Model):
 
     class Meta:
         ordering = ['status','due']
+
+class Note(models.Model):
+    commitment = models.ForeignKey(Commitment)
+    changelog = models.CharField(max_length=500, blank=True, default='')
+    notes = models.TextField(blank=True, default='')
+    user = models.ForeignKey(auth_models.User)
+    datestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['datestamp']

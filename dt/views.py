@@ -35,8 +35,8 @@ def commitment(request, cid=None):
         commitment = models.Commitment()
     if request.method == 'POST':
         form = forms.CommitmentForm(request, request.POST, instance=commitment)
-        if form.is_valid:
-            form.save()
+        if form.is_valid():
+            form.save(request)
             return HttpResponseRedirect(reverse('commitmenttable'))
     else:
         form = forms.CommitmentForm(request, instance=commitment)
