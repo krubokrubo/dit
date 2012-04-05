@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth import models as auth_models
 
 STATUS = (
@@ -6,7 +7,7 @@ STATUS = (
     ('p', 'Pending'),
     ('x', 'Cancelled'),
     ('y', 'Cleaned Up'),
-    ('z', 'Completed'),
+    ('z', 'Fulfilled'),
 )
 
 SCALE = (
@@ -17,8 +18,11 @@ SCALE = (
     ('5', 'World'),
 )
 
+class CommitmentManager(models.Manager):
+    'Filter commitments that this user has permission to see'
+    def visibleto(self, user):
+        return self.filter(Q(accountable=user) | Q(stakeholders=user)).distinct()
 
-# Create your models here.
 class Commitment(models.Model):
     name = models.CharField(max_length=500, blank=True, default='')
     due = models.DateTimeField()
@@ -29,6 +33,8 @@ class Commitment(models.Model):
     measurable = models.BooleanField(default=False)
     scale = models.CharField(max_length=1, choices=SCALE, default='1')
 
+    objects = CommitmentManager()
+
     def __unicode__(self):
         title = self.name
         if ': ' in title:
@@ -36,4 +42,4 @@ class Commitment(models.Model):
         return '%s (%s)' % (title, self.get_status_display())
 
     class Meta:
-        ordering = ['due','status']
+        ordering = ['status','due']

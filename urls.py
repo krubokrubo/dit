@@ -29,6 +29,6 @@ urlpatterns = patterns('',
 
     url(r'^$', redirect_to, {'url':settings.FIRST_URL}),
     url(r'^dt/$', 'dit.dt.views.commitmenttable', name='commitmenttable'),
-    url(r'^dt/add/$', 'dit.dt.views.commitmentform', name='commitmentadd'),
-    url(r'^dt/edit/(\d+)/$', 'dit.dt.views.commitmentform', name='commitmentedit'),
+    url(r'^dt/add/$', 'dit.dt.views.commitment', name='commitmentadd'),
+    url(r'^dt/(\d+)/$', 'dit.dt.views.commitment', name='commitment'),
 )
