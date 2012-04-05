@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth import models as auth_models
 
 STATUS = (
-    ('p', 'Pending'),
-    ('c', 'Completed'),
     ('o', 'Overdue'),
+    ('p', 'Pending'),
     ('x', 'Cancelled'),
-    ('k', 'Cleaned Up'),
+    ('y', 'Cleaned Up'),
+    ('z', 'Completed'),
 )
 
 SCALE = (
@@ -22,12 +22,18 @@ SCALE = (
 class Commitment(models.Model):
     name = models.CharField(max_length=500, blank=True, default='')
     due = models.DateTimeField()
-    accountable = models.ManyToManyField(auth_models.User,related_name='accountable_for')
-    stakeholders = models.ManyToManyField(auth_models.User,related_name='stakeholder_for')
+    accountable = models.ManyToManyField(auth_models.User,related_name='accountable_for',blank=True)
+    stakeholders = models.ManyToManyField(auth_models.User,related_name='stakeholder_for',blank=True)
     partof = models.ForeignKey('self',blank=True,null=True)
     status = models.CharField(max_length=1, choices=STATUS, default='p')
     measurable = models.BooleanField(default=False)
     scale = models.CharField(max_length=1, choices=SCALE, default='1')
 
     def __unicode__(self):
-        return '%s (%s)' % (self.name, self.get_status_display())
+        title = self.name
+        if ': ' in title:
+            title = title.split(': ')[0]
+        return '%s (%s)' % (title, self.get_status_display())
+
+    class Meta:
+        ordering = ['due','status']

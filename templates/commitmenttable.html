@@ -1,0 +1,29 @@
+<form>
+<input name="q" value="{{ q }}">
+<input type="submit" value="Filter">
+
+<a href="{% url commitmentadd %}">Create Commitment</a>
+<a href="{% url logout %}">Logout</a>
+</form>
+
+
+<table>
+<tr>
+  <th>Status</th>
+  <th>Commitment</th>
+  <th>Due</th>
+  <th>Accountable</th>
+  <th>Stakeholders</th>
+  <th>Part of</th>
+</tr>
+{% for c in commitments %}
+<tr>
+  <td>{{ c.get_status_display }}</td>
+  <td><a href="{% url commitmentedit c.id %}">{{ c.name }}</a></td>
+  <td>{{ c.due|date:"m/d/Y" }}</td>
+  <td>{% for u in c.accountable.all %}<div>{{ u.username }}</div>{%endfor%}</td>
+  <td>{% for u in c.stakeholders.all %}<div>{{ u.username }}</div>{%endfor%}</td>
+  <td>{{ c.partof }}</td>
+</tr>
+{% endfor %}
+</table>
