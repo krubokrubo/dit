@@ -1,0 +1,8 @@
+<h1>Invite New User</h1>
+<form method="POST">
+<table>
+{% csrf_token %}
+{{ form }}
+</table>
+<input type="submit" value="Submit">
+</form>

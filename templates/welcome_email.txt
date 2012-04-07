@@ -1,0 +1,18 @@
+Dear {{ user.username }},
+
+You have been invited to use Do It Together (DIT)!  This is a project 
+to track commitments socially.  The idea is, you are more likely to accomplish 
+what you set out to do if other people are supporting you and holding you
+to account for it.
+
+Please go to the following page and choose a new password:{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url django.contrib.auth.views.password_reset_confirm uidb36=uid, token=token %}
+{% endblock %}
+
+Then you can log in at:  {{ protocol }}:{{ domain }}{% url commitmenttable %} 
+
+If you have received this email in error, please accept my apologies.  
+In case of any system problem, you can call me at 215-729-2556.
+
+Sincerely,
+Paul Dexter
