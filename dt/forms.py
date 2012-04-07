@@ -19,7 +19,23 @@ class CommitmentForm(forms.ModelForm):
         self.fields['stakeholders'].queryset = auth_models.User.objects.all().order_by('username')
 
     def save(self, request):
-        changelog = "(changelog doesn't work yet)"
+        changelog = ''
+        old = models.Commitment.objects.filter(id=self.instance.id)
+        # see https://code.djangoproject.com/ticket/14885 about self.instance
+        # also see http://stackoverflow.com/questions/761698/
+        if old:
+            old = old[0]
+            if self.instance.status != old.status:
+                changelog += 'Status: %s -> %s; ' % (old.get_status_display(),
+                        self.instance.get_status_display())
+            if self.instance.due != old.due:
+                changelog += 'Due: %s -> %s; ' % (old.due.strftime('%m/%d/%Y'),
+                        self.instance.due.strftime('%m/%d/%Y'))
+            if self.instance.name != old.name:
+                changelog += 'Title: %s -> %s; ' % (old.name, self.instance.name)
+                # fixme: if Title has -> ; patterns, it could break functions
+                # that parse the changelog later
+            # todo: show in changelog if people are added/removed
         super(CommitmentForm, self).save()
         note = models.Note.objects.create(
                 commitment=self.instance,
