@@ -10,7 +10,7 @@ class CommitmentForm(forms.ModelForm):
 
     accountable = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
     stakeholders = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
-    add_notes = forms.CharField(widget=forms.Textarea)   
+    add_notes = forms.CharField(widget=forms.Textarea, required=False)   
 
     def __init__(self, request, *args, **kwargs):
         super(CommitmentForm, self).__init__(*args, **kwargs)
@@ -34,3 +34,5 @@ class CommitmentFilterForm(forms.ModelForm):
         exclude = ('measurable','scale')
         
     
+class InviteForm(forms.Form):
+    email = forms.EmailField(max_length=30, help_text='Max length is 30 characters')

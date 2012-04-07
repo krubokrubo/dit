@@ -9,7 +9,7 @@
 <div class="note">
   <div class="userdate">{{ note.user }} on {{ note.datestamp }}:</div>
   <div class="changelog">{{ note.changelog }}</div>
-  {{ note.notes }}
+  {{ note.notes|linebreaks }}
 </div>
 {% endfor %}
 
