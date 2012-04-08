@@ -6,7 +6,7 @@ from django.contrib.auth import models as auth_models
 class CommitmentForm(forms.ModelForm):
     class Meta:
         model = models.Commitment
-        exclude = ('measurable','scale')
+        exclude = ('scale')
 
     accountable = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
     stakeholders = forms.ModelMultipleChoiceField([], widget=forms.CheckboxSelectMultiple(), required=False)
@@ -18,12 +18,12 @@ class CommitmentForm(forms.ModelForm):
         self.fields['accountable'].queryset = auth_models.User.objects.all().order_by('username')
         self.fields['stakeholders'].queryset = auth_models.User.objects.all().order_by('username')
 
-    def save(self, request):
+    def save(self, request, isedit):
         changelog = ''
-        old = models.Commitment.objects.filter(id=self.instance.id)
         # see https://code.djangoproject.com/ticket/14885 about self.instance
         # also see http://stackoverflow.com/questions/761698/
-        if old:
+        if isedit:
+            old = models.Commitment.objects.filter(id=self.instance.id)
             old = old[0]
             if self.instance.status != old.status:
                 changelog += 'Status: %s -> %s; ' % (old.get_status_display(),

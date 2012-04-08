@@ -25,12 +25,12 @@ class CommitmentManager(models.Manager):
 
 class Commitment(models.Model):
     name = models.CharField(max_length=500, blank=True, default='', verbose_name='Title')
-    due = models.DateTimeField()
+    due = models.DateTimeField(blank=True, null=True)
     accountable = models.ManyToManyField(auth_models.User,related_name='accountable_for',blank=True)
     stakeholders = models.ManyToManyField(auth_models.User,related_name='stakeholder_for',blank=True)
     partof = models.ForeignKey('self',blank=True,null=True)
     status = models.CharField(max_length=1, choices=STATUS, default='p')
-    measurable = models.BooleanField(default=False)
+    measurable = models.BooleanField(default=True)
     scale = models.CharField(max_length=1, choices=SCALE, default='1')
 
     objects = CommitmentManager()

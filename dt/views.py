@@ -27,8 +27,8 @@ def commitmenttable(request):
 
 @login_required
 def commitment(request, cid=None):
-    edit = bool(cid)
-    if edit:
+    isedit = bool(cid)
+    if isedit:
         commitment = models.Commitment.objects.visibleto(request.user).filter(id=cid)
         if not commitment:
             return HttpResponseNotFound('No such commitment, or you are not listed in it.')
@@ -38,7 +38,7 @@ def commitment(request, cid=None):
     if request.method == 'POST':
         form = forms.CommitmentForm(request, request.POST, instance=commitment)
         if form.is_valid():
-            form.save(request)
+            form.save(request, isedit)
             return HttpResponseRedirect(reverse('commitmenttable'))
     else:
         form = forms.CommitmentForm(request, instance=commitment)
