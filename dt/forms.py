@@ -29,13 +29,17 @@ class CommitmentForm(forms.ModelForm):
                 changelog += 'Status: %s -> %s; ' % (old.get_status_display(),
                         self.instance.get_status_display())
             if self.instance.due != old.due:
-                changelog += 'Due: %s -> %s; ' % (old.due.strftime('%m/%d/%Y'),
-                        self.instance.due.strftime('%m/%d/%Y'))
-            if self.instance.name != old.name:
-                changelog += 'Title: %s -> %s; ' % (old.name, self.instance.name)
+                changelog += 'Due: %s -> %s; ' % (old.duedate(),
+                        self.instance.duedate())
+            if self.instance.title != old.title:
+                changelog += 'Title: %s -> %s; ' % (old.title, 
+                        self.instance.title)
                 # fixme: if Title has -> ; patterns, it could break functions
                 # that parse the changelog later
             # todo: show in changelog if people are added/removed
+        else:
+            changelog += 'Created commitment, status %s, due %s' % (
+                self.instance.get_status_display(), self.instance.duedate())
         super(CommitmentForm, self).save()
         note = models.Note.objects.create(
                 commitment=self.instance,

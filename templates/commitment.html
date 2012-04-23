@@ -3,6 +3,7 @@
 </style>
 
 
+<a href="{% url commitmenttable %}">back to main page</a>
 <h1>{{ commitment }}</h1>
 
 {% for note in commitment.note_set.all %}

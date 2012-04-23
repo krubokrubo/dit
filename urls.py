@@ -32,4 +32,5 @@ urlpatterns = patterns('',
     url(r'^dt/add/$', 'dit.dt.views.commitment', name='commitmentadd'),
     url(r'^dt/(\d+)/$', 'dit.dt.views.commitment', name='commitment'),
     url(r'^dt/invite/$', 'dit.dt.views.invite', name='invite'),
+    url(r'^dt/stats/$', 'dit.dt.views.stats', name='stats'),
 )
